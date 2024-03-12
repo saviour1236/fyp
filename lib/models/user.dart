@@ -18,6 +18,7 @@ class User {
         "email": email,
         "uid": uid,
       };
+
   static User fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return User(

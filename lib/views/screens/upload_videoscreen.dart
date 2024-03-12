@@ -35,7 +35,7 @@ class AddVideoScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(7.0),
                   child: Text(
-                    'Upload from Gallery',
+                    'Gallery',
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
@@ -50,7 +50,7 @@ class AddVideoScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(7.0),
                   child: Text(
-                    'Upload from Camera',
+                    'Camera',
                     style: TextStyle(fontSize: 20),
                   ),
                 ),

@@ -96,7 +96,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                           _captionController.text,
                           widget.videoPath),
                       child: const Text(
-                        'Upload',
+                        'Share!',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,

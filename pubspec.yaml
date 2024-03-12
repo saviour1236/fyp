@@ -31,15 +31,20 @@ dependencies:
   cloud_firestore: ^4.15.4
   cupertino_icons: ^1.0.2
   firebase_app_check: ^0.2.1+15
+
   firebase_auth: ^4.17.4
-  firebase_core: ^2.25.4
+  firebase_core: ^2.26.0
   firebase_storage: ^11.6.0
   flutter:
     sdk: flutter
   get: ^4.6.6
   image_picker: ^1.0.7
-  video_compress: ^3.1.2
+  video_compress:
+    git:
+     url: https://github.com/SpectoraSoftware/VideoCompress
   video_player: ^2.8.2
+  timeago: ^3.6.1
+  cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_lints: ^3.0.1

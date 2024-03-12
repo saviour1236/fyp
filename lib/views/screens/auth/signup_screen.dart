@@ -19,7 +19,7 @@ class SignupScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'TikStore',
+              'Tikstore',
               style: TextStyle(
                 fontSize: 35,
                 color: buttonColor,
@@ -41,7 +41,7 @@ class SignupScreen extends StatelessWidget {
                 const CircleAvatar(
                   radius: 64,
                   backgroundImage: NetworkImage(
-                      'https://icons.iconarchive.com/icons/papirus-team/papirus-status/256/avatar-default-icon.png'),
+                      'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'),
                   backgroundColor: Colors.black,
                 ),
                 Positioned(
