@@ -32,6 +32,7 @@ class UploadVideoController extends GetxController {
       // get id
       var allDocs = await firestore.collection('videos').get();
       int len = allDocs.docs.length;
+      
       String videoUrl = await _uploadVideoToStorage("Video $len", videoPath);
       String thumbnail = await _uploadImageToStorage("Video $len", videoPath);
 

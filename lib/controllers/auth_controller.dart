@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
@@ -65,10 +67,12 @@ class AuthController extends GetxController {
           password.isNotEmpty &&
           image != null) {
         // save out user to our ath and firebase firestore
+
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
+
         String downloadUrl = await _uploadToStorage(image);
         model.User user = model.User(
           name: username,
@@ -76,6 +80,7 @@ class AuthController extends GetxController {
           uid: cred.user!.uid,
           profilePhoto: downloadUrl,
         );
+
         await firestore
             .collection('users')
             .doc(cred.user!.uid)
