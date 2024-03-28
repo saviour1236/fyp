@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
@@ -15,16 +14,17 @@ class UploadVideoController extends GetxController {
     return downloadUrl;
   }
 
-  Future<String> _uploadImageToStorage(String id, String videoPath) async {
+  Future<String> _uploadImageToStorage(String id, String imagePath) async {
     Reference ref = firebaseStorage.ref().child('thumbnails').child(id);
-    UploadTask uploadTask = ref.putFile(File(videoPath));
+    UploadTask uploadTask = ref.putFile(File(imagePath));
     TaskSnapshot snap = await uploadTask;
     String downloadUrl = await snap.ref.getDownloadURL();
     return downloadUrl;
   }
 
   // upload video
-  uploadVideo(String songName, String caption, String videoPath) async {
+  uploadVideo(String songName, String caption, String videoPath,
+      {File? thumbnailFile}) async {
     try {
       String uid = firebaseAuth.currentUser!.uid;
       DocumentSnapshot userDoc =
@@ -33,7 +33,12 @@ class UploadVideoController extends GetxController {
       var allDocs = await firestore.collection('videos').get();
       int len = allDocs.docs.length;
       String videoUrl = await _uploadVideoToStorage("Video $len", videoPath);
-      String thumbnail = await _uploadImageToStorage("Video $len", videoPath);
+      String thumbnailUrl = '';
+
+      if (thumbnailFile != null) {
+        thumbnailUrl =
+            await _uploadImageToStorage("Thumbnail $len", thumbnailFile.path);
+      }
 
       Video video = Video(
         username: (userDoc.data()! as Map<String, dynamic>)['name'],
@@ -46,7 +51,7 @@ class UploadVideoController extends GetxController {
         caption: caption,
         videoUrl: videoUrl,
         profilePhoto: (userDoc.data()! as Map<String, dynamic>)['profilePhoto'],
-        thumbnail: thumbnail,
+        thumbnail: thumbnailUrl,
       );
 
       await firestore.collection('videos').doc('Video $len').set(

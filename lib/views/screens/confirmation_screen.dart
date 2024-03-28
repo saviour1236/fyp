@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:tikstore/controllers/uploadvideo_controller.dart';
 import 'package:tikstore/views/widgets/text_input_field.dart';
 import 'package:video_player/video_player.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ConfirmScreen extends StatefulWidget {
   final File videoFile;
@@ -22,7 +23,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
   late VideoPlayerController controller;
   TextEditingController _songController = TextEditingController();
   TextEditingController _captionController = TextEditingController();
-
+  File? _imageFile; // Added variable to store selected image
   UploadVideoController uploadVideoController =
       Get.put(UploadVideoController());
 
@@ -44,6 +45,17 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
     controller.dispose();
   }
 
+  // Method to pick an image from the gallery
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _imageFile = File(pickedImage.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +65,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
             const SizedBox(
               height: 30,
             ),
+            // Display video player
             SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 1.5,
@@ -66,12 +79,25 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  // Text input fields for song name and caption
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     width: MediaQuery.of(context).size.width - 20,
                     child: TextInputField(
                       controller: _songController,
-                      labelText: 'Song Name',
+                      labelText: 'Price',
+                      icon: Icons.currency_rupee,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    width: MediaQuery.of(context).size.width - 20,
+                    child: TextInputField(
+                      controller: _songController,
+                      labelText: 'Song',
                       icon: Icons.music_note,
                     ),
                   ),
@@ -83,25 +109,46 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                     width: MediaQuery.of(context).size.width - 20,
                     child: TextInputField(
                       controller: _captionController,
-                      labelText: 'Caption',
+                      labelText: 'Description',
                       icon: Icons.closed_caption,
                     ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
+                  // Button to pick an image from the gallery
                   ElevatedButton(
-                      onPressed: () => uploadVideoController.uploadVideo(
-                          _songController.text,
-                          _captionController.text,
-                          widget.videoPath),
-                      child: const Text(
-                        'Share!',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ))
+                    onPressed: _pickImage,
+                    child: const Text(
+                      'Pick Thumbnail',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  // Display selected image if available
+                  if (_imageFile != null) ...[
+                    Image.file(_imageFile!), // Display selected image
+                    const SizedBox(height: 10),
+                  ],
+                  // Button to upload video
+                  ElevatedButton(
+                    onPressed: () => uploadVideoController.uploadVideo(
+                      _songController.text,
+                      _captionController.text,
+                      widget.videoPath,
+                      thumbnailFile:
+                          _imageFile, // Pass selected image as thumbnail
+                    ),
+                    child: const Text(
+                      'Upload',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )

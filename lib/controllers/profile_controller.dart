@@ -15,13 +15,15 @@ class ProfileController extends GetxController {
 
   getUserData() async {
     List<String> thumbnails = [];
-    var myVideos = await firestore
-        .collection('videos')
+    var myImages = await firestore
+        .collection('thumbnails')
         .where('uid', isEqualTo: _uid.value)
         .get();
 
-    for (int i = 0; i < myVideos.docs.length; i++) {
-      thumbnails.add((myVideos.docs[i].data() as dynamic)['thumbnail']);
+    for (int i = 0; i < myImages.docs.length; i++) {
+      String thumbnailUrl = (myImages.docs[i].data() as dynamic)['thumbnail'];
+      print('Thumbnail URL for 1232345video $i: $thumbnailUrl');
+      thumbnails.add(thumbnailUrl);
     }
 
     DocumentSnapshot userDoc =
@@ -34,7 +36,7 @@ class ProfileController extends GetxController {
     int following = 0;
     bool isFollowing = false;
 
-    for (var item in myVideos.docs) {
+    for (var item in myImages.docs) {
       likes += (item.data()['likes'] as List).length;
     }
     var followerDoc = await firestore
