@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/controllers/video_controller.dart';
@@ -74,6 +75,7 @@ class VideoScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+    
       body: Obx(() {
         return PageView.builder(
           itemCount: videoController.videoList.length,
