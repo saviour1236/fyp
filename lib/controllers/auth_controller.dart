@@ -1,7 +1,5 @@
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
@@ -12,6 +10,9 @@ import 'package:tikstore/views/screens/auth/login_screen.dart';
 import 'package:tikstore/views/screens/home_screen.dart';
 
 class AuthController extends GetxController {
+  final RxBool _isLoading = RxBool(false);
+  RxBool get isLoading => _isLoading;
+
   static AuthController instance = Get.find();
   late Rx<User?> _user;
   late Rx<File?> _pickedImage;
@@ -23,16 +24,8 @@ class AuthController extends GetxController {
   void onReady() {
     super.onReady();
     _user = Rx<User?>(firebaseAuth.currentUser);
-    _user.bindStream(firebaseAuth.authStateChanges());
-    ever(_user, _setInitialScreen);
-  }
-
-  _setInitialScreen(User? user) {
-    if (user == null) {
-      Get.offAll(() => LoginScreen());
-    } else {
-      Get.offAll(() => const HomeScreen());
-    }
+    // _user.bindStream(firebaseAuth.authStateChanges());
+    // ever(_user, _setInitialScreen);
   }
 
   void pickImage() async {
@@ -59,14 +52,17 @@ class AuthController extends GetxController {
   }
 
   // registering the user
-  void registerUser(
+  Future<String> registerUser(
       String username, String email, String password, File? image) async {
+    String result = 'OK';
     try {
       if (username.isNotEmpty &&
           email.isNotEmpty &&
           password.isNotEmpty &&
           image != null) {
         // save out user to our ath and firebase firestore
+
+        _isLoading.value = true;
 
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
           email: email,
@@ -92,11 +88,16 @@ class AuthController extends GetxController {
         );
       }
     } catch (e) {
+      result = 'Error Creating Account';
       Get.snackbar(
         'Error Creating Account',
         e.toString(),
       );
     }
+
+    _isLoading.value = false;
+
+    return result;
   }
 
   void loginUser(String email, String password) async {
@@ -112,7 +113,7 @@ class AuthController extends GetxController {
       }
     } catch (e) {
       Get.snackbar(
-        'Error Loggin gin',
+        'Error Logging in',
         e.toString(),
       );
     }

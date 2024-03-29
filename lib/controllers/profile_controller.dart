@@ -15,9 +15,7 @@ class ProfileController extends GetxController {
 
   getUserData() async {
     List<String> thumbnails = [];
-    // var myImages = await firestore
-    //     .collection('thumbnails')
-    //     .where('uid', isEqualTo: _uid.value)
+
     var myVideos = await firestore
         .collection('videos')
         .where('uid', isEqualTo: firebaseAuth.currentUser!.uid)

@@ -207,15 +207,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             itemBuilder: (context, index) {
                               String thumbnail =
                                   controller.user['thumbnails'][index];
-                              //return CachedNetworkImage(
-                              //imageUrl:
-                              //  'https://firebasestorage.googleapis.com/v0/b/mytikstore-cd9de.appspot.com/o/thumbnails%2FThumbnail%206?alt=media&token=642897cf-d831-452e-b3f3-6536d0dd57ea',
-                              //fit: BoxFit.cover,
-                              //);
-                              return Container(
-                                height: 20,
-                                width: 20,
-                                color: Colors.red,
+                              return CachedNetworkImage(
+                                imageUrl: thumbnail,
+                                fit: BoxFit.cover,
                               );
                             },
                           )

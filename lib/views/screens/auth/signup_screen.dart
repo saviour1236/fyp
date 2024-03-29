@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/views/screens/auth/login_screen.dart';
+import 'package:tikstore/views/screens/home_screen.dart';
 import 'package:tikstore/views/widgets/text_input_field.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -96,32 +98,47 @@ class SignupScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            Container(
-              width: MediaQuery.of(context).size.width - 40,
-              height: 50,
-              decoration: BoxDecoration(
-                color: buttonColor,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              child: InkWell(
-                onTap: () => authController.registerUser(
-                  _usernameController.text,
-                  _emailController.text,
-                  _passwordController.text,
-                  authController.profilePhoto,
-                ),
-                child: const Center(
-                  child: Text(
-                    'Register',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
+            Obx(
+              () => authController.isLoading.value
+                  ? const CircularProgressIndicator()
+                  : Container(
+                      width: MediaQuery.of(context).size.width - 40,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: buttonColor,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () async {
+                          final result = await authController.registerUser(
+                            _usernameController.text,
+                            _emailController.text,
+                            _passwordController.text,
+                            authController.profilePhoto,
+                          );
+
+                          if (result == 'OK') {
+                            Get.to(HomeScreen());
+                          } else {
+                            Get.snackbar(
+                              'Error Creating Account',
+                              result,
+                            );
+                          }
+                        },
+                        child: const Center(
+                          child: Text(
+                            'Register',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
             ),
             const SizedBox(
               height: 15,
