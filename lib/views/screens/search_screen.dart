@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tikstore/constants.dart';
 import 'package:tikstore/controllers/search_controller.dart'
     as CustomSearchController;
 
@@ -48,7 +49,10 @@ class SearchScreen extends StatelessWidget {
                   return InkWell(
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => ProfileScreen(uid: user.uid),
+                        builder: (context) => ProfileScreen(
+                          uid: user.uid,
+                          ownprofile: user.uid == firebaseAuth.currentUser!.uid,
+                        ),
                       ),
                     ),
                     child: ListTile(

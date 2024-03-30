@@ -23,9 +23,12 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
   late VideoPlayerController controller;
   TextEditingController _songController = TextEditingController();
   TextEditingController _captionController = TextEditingController();
-  File? _imageFile; // Added variable to store selected image
+  TextEditingController _priceController = TextEditingController();
+
+  File? _imageFile;
   UploadVideoController uploadVideoController =
       Get.put(UploadVideoController());
+  bool _isUploading = false; // Variable to track upload status
 
   @override
   void initState() {
@@ -84,7 +87,8 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     width: MediaQuery.of(context).size.width - 20,
                     child: TextInputField(
-                      controller: _songController,
+                      controller: _priceController,
+                      keyboardType: TextInputType.number,
                       labelText: 'Price',
                       icon: Icons.currency_rupee,
                     ),
@@ -129,25 +133,38 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                   ),
                   // Display selected image if available
                   if (_imageFile != null) ...[
-                    Image.file(_imageFile!), // Display selected image
+                    Image.file(_imageFile!),
                     const SizedBox(height: 10),
                   ],
                   // Button to upload video
                   ElevatedButton(
-                    onPressed: () => uploadVideoController.uploadVideo(
-                      _songController.text,
-                      _captionController.text,
-                      widget.videoPath,
-                      thumbnailFile:
-                          _imageFile, // Pass selected image as thumbnail
-                    ),
-                    child: const Text(
-                      'Upload',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
+                    onPressed: _isUploading
+                        ? null
+                        : () async {
+                            setState(() {
+                              _isUploading = true; // Start upload process
+                            });
+                            // Perform video upload
+                            await uploadVideoController.uploadVideo(
+                              price: double.parse(_priceController.text),
+                              songName: _songController.text,
+                              caption: _captionController.text,
+                              videoPath: widget.videoPath,
+                              thumbnailFile: _imageFile,
+                            );
+                            setState(() {
+                              _isUploading = false; // End upload process
+                            });
+                          },
+                    child: _isUploading
+                        ? const CircularProgressIndicator()
+                        : const Text(
+                            'Upload',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ],
               ),

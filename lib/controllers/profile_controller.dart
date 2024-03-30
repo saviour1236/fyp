@@ -7,9 +7,11 @@ class ProfileController extends GetxController {
   Map<String, dynamic> get user => _user.value;
 
   Rx<String> _uid = "".obs;
+  bool ownprofile = false;
 
-  updateUserId(String uid) {
+  updateUserId(String uid, bool ownprofile1) {
     _uid.value = uid;
+    ownprofile = ownprofile1;
     getUserData();
   }
 
@@ -18,7 +20,8 @@ class ProfileController extends GetxController {
 
     var myVideos = await firestore
         .collection('videos')
-        .where('uid', isEqualTo: firebaseAuth.currentUser!.uid)
+        .where('uid',
+            isEqualTo: ownprofile ? firebaseAuth.currentUser!.uid : _uid.value)
         .get();
 
     for (int i = 0; i < myVideos.docs.length; i++) {
@@ -57,7 +60,7 @@ class ProfileController extends GetxController {
         .collection('users')
         .doc(_uid.value)
         .collection('followers')
-        .doc(authController.user.uid)
+        .doc(authController.user!.uid)
         .get()
         .then((value) {
       if (value.exists) {
@@ -84,7 +87,7 @@ class ProfileController extends GetxController {
         .collection('users')
         .doc(_uid.value)
         .collection('followers')
-        .doc(authController.user.uid)
+        .doc(authController.user!.uid)
         .get();
 
     if (!doc.exists) {
@@ -92,11 +95,11 @@ class ProfileController extends GetxController {
           .collection('users')
           .doc(_uid.value)
           .collection('followers')
-          .doc(authController.user.uid)
+          .doc(authController.user!.uid)
           .set({});
       await firestore
           .collection('users')
-          .doc(authController.user.uid)
+          .doc(authController.user!.uid)
           .collection('following')
           .doc(_uid.value)
           .set({});
@@ -109,11 +112,11 @@ class ProfileController extends GetxController {
           .collection('users')
           .doc(_uid.value)
           .collection('followers')
-          .doc(authController.user.uid)
+          .doc(authController.user!.uid)
           .delete();
       await firestore
           .collection('users')
-          .doc(authController.user.uid)
+          .doc(authController.user!.uid)
           .collection('following')
           .doc(_uid.value)
           .delete();

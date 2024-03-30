@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/models/video.dart';
 
 class UploadVideoController extends GetxController {
+  bool _isUploading = false; // Flag to track upload status
+
   Future<String> _uploadVideoToStorage(String id, String videoPath) async {
     Reference ref = firebaseStorage.ref().child('videos').child(id);
     UploadTask uploadTask = ref.putFile(File(videoPath));
@@ -23,16 +26,23 @@ class UploadVideoController extends GetxController {
   }
 
   // upload video
-  uploadVideo(String songName, String caption, String videoPath,
-      {File? thumbnailFile}) async {
+  uploadVideo(
+      {required String songName,
+      required String caption,
+      required String videoPath,
+      double? price,
+      File? thumbnailFile}) async {
     try {
+      _isUploading = true; // Set uploading flag to true
+      update(); // Notify listeners to reflect changes in UI
+
       String uid = firebaseAuth.currentUser!.uid;
       DocumentSnapshot userDoc =
           await firestore.collection('users').doc(uid).get();
       // get id
       var allDocs = await firestore.collection('videos').get();
       int len = allDocs.docs.length;
-      
+
       String videoUrl = await _uploadVideoToStorage("Video $len", videoPath);
       String thumbnailUrl = '';
 
@@ -46,6 +56,7 @@ class UploadVideoController extends GetxController {
         uid: uid,
         id: "Video $len",
         likes: [],
+        price: price,
         commentCount: 0,
         shareCount: 0,
         songName: songName,
@@ -58,12 +69,21 @@ class UploadVideoController extends GetxController {
       await firestore.collection('videos').doc('Video $len').set(
             video.toJson(),
           );
+
+      _isUploading =
+          false; // Set uploading flag to false after upload completes
+      update(); // Notify listeners to reflect changes in UI
       Get.back();
     } catch (e) {
+      _isUploading = false; // Set uploading flag to false on error
+      update(); // Notify listeners to reflect changes in UI
       Get.snackbar(
         'Error Uploading Video',
         e.toString(),
       );
     }
   }
+
+  // Getter to access upload status
+  bool get isUploading => _isUploading;
 }

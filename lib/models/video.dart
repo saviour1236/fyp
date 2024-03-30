@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Video {
@@ -5,6 +7,7 @@ class Video {
   String uid;
   String id;
   List likes;
+  double? price;
   int commentCount;
   int shareCount;
   String songName;
@@ -14,6 +17,7 @@ class Video {
   String profilePhoto;
 
   Video({
+    this.price = 0.0,
     required this.username,
     required this.uid,
     required this.id,
@@ -33,6 +37,7 @@ class Video {
         "profilePhoto": profilePhoto,
         "id": id,
         "likes": likes,
+        "price": price,
         "commentCount": commentCount,
         "shareCount": shareCount,
         "songName": songName,
@@ -49,6 +54,7 @@ class Video {
       uid: snapshot['uid'],
       id: snapshot['id'],
       likes: snapshot['likes'],
+      price: snapshot['price'],
       commentCount: snapshot['commentCount'],
       shareCount: snapshot['shareCount'],
       songName: snapshot['songName'],

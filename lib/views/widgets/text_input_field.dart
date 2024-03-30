@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:tikstore/constants.dart';
 
 class TextInputField extends StatelessWidget {
@@ -6,8 +7,10 @@ class TextInputField extends StatelessWidget {
   final String labelText;
   final bool isObscure;
   final IconData icon;
+  final TextInputType? keyboardType;
   const TextInputField({
     Key? key,
+    this.keyboardType = TextInputType.text,
     required this.controller,
     required this.labelText,
     this.isObscure = false,
@@ -18,6 +21,7 @@ class TextInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: Icon(icon),

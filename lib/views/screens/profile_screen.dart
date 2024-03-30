@@ -4,12 +4,16 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/controllers/profile_controller.dart';
+import 'package:tikstore/views/screens/auth/login_screen.dart';
+import 'package:tikstore/views/screens/splash_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
+  final bool ownprofile;
   const ProfileScreen({
     Key? key,
     required this.uid,
+    this.ownprofile = false,
   }) : super(key: key);
 
   @override
@@ -22,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    profileController.updateUserId(widget.uid);
+    profileController.updateUserId(widget.uid, widget.ownprofile);
   }
 
   @override
@@ -170,14 +174,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Center(
                               child: InkWell(
                                 onTap: () {
-                                  if (widget.uid == authController.user.uid) {
+                                  if (widget.uid == authController.user!.uid) {
                                     authController.signOut();
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (_) => LoginScreen()));
                                   } else {
                                     controller.followUser();
                                   }
                                 },
                                 child: Text(
-                                  widget.uid == authController.user.uid
+                                  widget.uid == authController.user!.uid
                                       ? 'Sign Out'
                                       : controller.user['isFollowing']
                                           ? 'Unfollow'

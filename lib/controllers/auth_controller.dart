@@ -6,8 +6,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/models/user.dart' as model;
-import 'package:tikstore/views/screens/auth/login_screen.dart';
-import 'package:tikstore/views/screens/home_screen.dart';
 
 class AuthController extends GetxController {
   final RxBool _isLoading = RxBool(false);
@@ -18,7 +16,7 @@ class AuthController extends GetxController {
   late Rx<File?> _pickedImage;
 
   File? get profilePhoto => _pickedImage.value;
-  User get user => _user.value!;
+  User? get user => _user.value;
 
   @override
   void onReady() {
@@ -100,7 +98,9 @@ class AuthController extends GetxController {
     return result;
   }
 
-  void loginUser(String email, String password) async {
+  Future<String> loginUser(String email, String password) async {
+    String result = 'login ok';
+    _isLoading.value = true;
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
         await firebaseAuth.signInWithEmailAndPassword(
@@ -112,11 +112,13 @@ class AuthController extends GetxController {
         );
       }
     } catch (e) {
+      result = 'Error Logging in';
       Get.snackbar(
         'Error Logging in',
         e.toString(),
       );
     }
+    return result;
   }
 
   void signOut() async {
