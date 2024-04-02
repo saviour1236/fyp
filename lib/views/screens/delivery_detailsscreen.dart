@@ -1,6 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:tikstore/constants.dart';
+import 'package:tikstore/models/orderrequestsmodel.dart';
 
 class DeliveryDetailsScreen extends StatefulWidget {
+  final String thumbnailUrl;
+  final String sellerUsername;
+  final String sellerNumber;
+  final String? productName;
+  final String productDescription;
+  final double price;
+  final int qty;
+  const DeliveryDetailsScreen(
+      {super.key,
+      required this.thumbnailUrl,
+      required this.sellerUsername,
+      required this.sellerNumber,
+      this.productName,
+      required this.price,
+      required this.qty,
+      required this.productDescription});
   @override
   _DeliveryDetailsScreenState createState() => _DeliveryDetailsScreenState();
 }
@@ -157,7 +175,14 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
               SizedBox(height: 20),
               // Confirm Purchase button
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  OrderRequestModel order = OrderRequestModel(
+                      productName: widget.productName ?? "",
+                      thumbnail: widget.thumbnailUrl,
+                      price: widget.price,
+                      qty: widget.qty);
+                  orderController.createOrder(order);
+                },
                 child: Text('Confirm Purchase'),
               ),
               SizedBox(height: 20),
@@ -167,10 +192,4 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: DeliveryDetailsScreen(),
-  ));
 }

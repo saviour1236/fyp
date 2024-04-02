@@ -40,8 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message, size: 30),
-            label: 'Messages',
+            icon: Icon(Icons.shop, size: 30),
+            label: 'Cart',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person, size: 30),

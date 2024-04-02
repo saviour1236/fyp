@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/controllers/auth_controller.dart';
-import 'package:tikstore/views/screens/auth/signup_screen.dart';
 import 'package:tikstore/views/screens/splash_screen.dart';
 import 'firebase_options.dart';
 

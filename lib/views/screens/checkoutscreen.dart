@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tikstore/views/screens/delivery_detailsscreen.dart';
 
 class CheckoutScreen extends StatefulWidget {
   final String thumbnailUrl;
   final String sellerUsername;
   final String sellerNumber;
-  final String productName; // Added product name
+  final String? productName; // Added product name
   final String productDescription; // Added product description
+  final double price;
 
   CheckoutScreen({
     required this.thumbnailUrl,
@@ -13,6 +15,7 @@ class CheckoutScreen extends StatefulWidget {
     required this.sellerNumber,
     required this.productName, // Added product name
     required this.productDescription, // Added product description
+    required this.price,
   });
 
   @override
@@ -50,29 +53,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   Text(
                     'Sold By: ',
                     style: TextStyle(
-                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     widget.sellerUsername,
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  Spacer(), // Add space between texts
-                  Text(
-                    'Seller Number: ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    widget.sellerNumber,
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
+                    style: TextStyle(),
                   ),
                 ],
               ),
@@ -84,14 +70,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    widget.productName,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  widget.productName == null
+                      ? SizedBox()
+                      : Text(
+                          widget.productName ?? "",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
@@ -120,7 +108,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   icon: Icon(Icons.remove),
                 ),
                 Text(
-                  'Stock: $_stockCount',
+                  'Quantity: $_stockCount',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -149,11 +137,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     border: OutlineInputBorder(),
                     labelStyle: TextStyle(
                       fontSize: 16,
-                      color: Colors.black,
                     ),
                     alignLabelWithHint: false, // Center the label text
                   ),
-                  maxLines: 3,
+                  maxLines: null,
                 ),
               ),
             ),
@@ -163,7 +150,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Action to proceed to payment
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => DeliveryDetailsScreen(
+                            thumbnailUrl: widget.thumbnailUrl,
+                            productName: widget.productName,
+                            productDescription: widget.productDescription,
+                            sellerUsername: widget.sellerUsername,
+                            price: widget.price,
+                            qty: _stockCount,
+                            sellerNumber: widget.sellerNumber,
+                          )));
                 },
                 child: Text('Continue'),
               ),
@@ -173,18 +169,4 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: CheckoutScreen(
-      thumbnailUrl:
-          'https://t3.ftcdn.net/jpg/01/84/14/54/360_F_184145408_AJ8fpPSNhlAWWDeccmpru57nPIqbxWxx.jpg',
-      sellerUsername: 'Username',
-      sellerNumber: '+1234567890',
-      productName: 'Product Name', // Added product name
-      productDescription:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ullamcorper felis eget eros fermentum, a laoreet sapien facilisis. Sed tristique libero sed tortor eleifend, in semper enim feugiat. Phasellus pretium mauris in est feugiat, sit amet viverra purus lacinia.', // Added product description
-    ),
-  ));
 }

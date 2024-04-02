@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/controllers/video_controller.dart';
+import 'package:tikstore/views/screens/checkoutscreen.dart';
 import 'package:tikstore/views/screens/comment_screen.dart';
 import 'package:tikstore/views/widgets/circle_animation.dart';
 import 'package:tikstore/views/widgets/video_player_item.dart';
@@ -83,6 +84,7 @@ class VideoScreen extends StatelessWidget {
           scrollDirection: Axis.vertical,
           itemBuilder: (context, index) {
             final data = videoController.videoList[index];
+            print("data: ${data.toJson()}");
             return Stack(
               children: [
                 VideoPlayerItem(
@@ -139,15 +141,33 @@ class VideoScreen extends StatelessWidget {
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 8.0),
-                                        child: Container(
-                                          height: 40,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                              color: Colors.blue,
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
-                                          child: Center(
-                                            child: Text('Buy now'),
+                                        child: InkWell(
+                                          onTap: () => Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      CheckoutScreen(
+                                                          thumbnailUrl:
+                                                              data.thumbnail,
+                                                          sellerUsername:
+                                                              data.username,
+                                                          sellerNumber:
+                                                              "sellerNumber",
+                                                          productName:
+                                                              data.productName,
+                                                          price:
+                                                              data.price ?? 0.0,
+                                                          productDescription:
+                                                              data.caption))),
+                                          child: Container(
+                                            height: 40,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                                color: Colors.blue,
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            child: Center(
+                                              child: Text('Buy now'),
+                                            ),
                                           ),
                                         ),
                                       ),

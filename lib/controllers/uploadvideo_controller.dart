@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/models/video.dart';
+import 'package:uuid/uuid.dart';
 
 class UploadVideoController extends GetxController {
   bool _isUploading = false; // Flag to track upload status
@@ -31,6 +31,7 @@ class UploadVideoController extends GetxController {
       required String caption,
       required String videoPath,
       double? price,
+      String? productName,
       File? thumbnailFile}) async {
     try {
       _isUploading = true; // Set uploading flag to true
@@ -41,7 +42,7 @@ class UploadVideoController extends GetxController {
           await firestore.collection('users').doc(uid).get();
       // get id
       var allDocs = await firestore.collection('videos').get();
-      int len = allDocs.docs.length;
+      String len = Uuid().v4();
 
       String videoUrl = await _uploadVideoToStorage("Video $len", videoPath);
       String thumbnailUrl = '';
@@ -57,6 +58,7 @@ class UploadVideoController extends GetxController {
         id: "Video $len",
         likes: [],
         price: price,
+        productName: productName,
         commentCount: 0,
         shareCount: 0,
         songName: songName,

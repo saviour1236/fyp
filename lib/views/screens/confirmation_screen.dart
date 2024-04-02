@@ -24,6 +24,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
   TextEditingController _songController = TextEditingController();
   TextEditingController _captionController = TextEditingController();
   TextEditingController _priceController = TextEditingController();
+  TextEditingController _productController = TextEditingController();
 
   File? _imageFile;
   UploadVideoController uploadVideoController =
@@ -83,6 +84,19 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   // Text input fields for song name and caption
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    width: MediaQuery.of(context).size.width - 20,
+                    child: TextInputField(
+                      controller: _productController,
+                      keyboardType: TextInputType.text,
+                      labelText: 'Product Name',
+                      icon: Icons.title,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     width: MediaQuery.of(context).size.width - 20,
@@ -147,6 +161,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                             // Perform video upload
                             await uploadVideoController.uploadVideo(
                               price: double.parse(_priceController.text),
+                              productName: _productController.text,
                               songName: _songController.text,
                               caption: _captionController.text,
                               videoPath: widget.videoPath,
