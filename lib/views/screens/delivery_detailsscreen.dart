@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tikstore/constants.dart';
+import 'package:get/get.dart';
+import 'package:tikstore/controllers/orderscontroller.dart';
 import 'package:tikstore/models/orderrequestsmodel.dart';
+import 'package:tikstore/views/screens/order_history.dart';
 
 class DeliveryDetailsScreen extends StatefulWidget {
   final String thumbnailUrl;
@@ -10,6 +12,7 @@ class DeliveryDetailsScreen extends StatefulWidget {
   final String productDescription;
   final double price;
   final int qty;
+  final String message;
   const DeliveryDetailsScreen(
       {super.key,
       required this.thumbnailUrl,
@@ -18,6 +21,7 @@ class DeliveryDetailsScreen extends StatefulWidget {
       this.productName,
       required this.price,
       required this.qty,
+      this.message = '',
       required this.productDescription});
   @override
   _DeliveryDetailsScreenState createState() => _DeliveryDetailsScreenState();
@@ -29,6 +33,7 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
   String _enteredTole = ''; // To store the entered tole
   String _customerName = ''; // To store the customer's name
   String _phoneNumber = ''; // To store the customer's phone number
+  OrderController orderController = Get.put(OrderController());
 
   @override
   Widget build(BuildContext context) {
@@ -175,13 +180,23 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
               SizedBox(height: 20),
               // Confirm Purchase button
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   OrderRequestModel order = OrderRequestModel(
                       productName: widget.productName ?? "",
                       thumbnail: widget.thumbnailUrl,
                       price: widget.price,
-                      qty: widget.qty);
-                  orderController.createOrder(order);
+                      qty: widget.qty,
+                      productDescription: widget.productDescription,
+                      sellerName: widget.sellerUsername,
+                      deliveryAddress:
+                          '$_selectedCity, $_selectedProvince, $_enteredTole, $_customerName, $_phoneNumber');
+
+                  final result =
+                      await orderController.createOrder(order, widget.message);
+                  if (result == 'OK') {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (_) => MyOrderHistoryScreen()));
+                  }
                 },
                 child: Text('Confirm Purchase'),
               ),

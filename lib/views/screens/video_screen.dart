@@ -131,46 +131,52 @@ class VideoScreen extends StatelessWidget {
                                           color: Colors.white,
                                         ),
                                       ),
-                                      Text(
-                                        data.price.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8.0),
-                                        child: InkWell(
-                                          onTap: () => Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      CheckoutScreen(
-                                                          thumbnailUrl:
-                                                              data.thumbnail,
-                                                          sellerUsername:
-                                                              data.username,
-                                                          sellerNumber:
-                                                              "sellerNumber",
-                                                          productName:
-                                                              data.productName,
-                                                          price:
-                                                              data.price ?? 0.0,
-                                                          productDescription:
-                                                              data.caption))),
-                                          child: Container(
-                                            height: 40,
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                                color: Colors.blue,
-                                                borderRadius:
-                                                    BorderRadius.circular(8)),
-                                            child: Center(
-                                              child: Text('Buy now'),
+                                      data.price == null
+                                          ? SizedBox.shrink()
+                                          : Text(
+                                              data.price.toString(),
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.white,
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
+                                      data.price == null
+                                          ? SizedBox.shrink()
+                                          : Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: InkWell(
+                                                onTap: () => Navigator.of(
+                                                        context)
+                                                    .push(MaterialPageRoute(
+                                                        builder: (_) => CheckoutScreen(
+                                                            thumbnailUrl:
+                                                                data.thumbnail,
+                                                            sellerUsername:
+                                                                data.username,
+                                                            sellerNumber:
+                                                                data.username,
+                                                            productName: data
+                                                                .productName,
+                                                            price: data.price ??
+                                                                0.0,
+                                                            productDescription:
+                                                                data.caption))),
+                                                child: Container(
+                                                  height: 40,
+                                                  width: 100,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8)),
+                                                  child: Center(
+                                                    child: Text('Buy now'),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                       Row(
                                         children: [
                                           const Icon(

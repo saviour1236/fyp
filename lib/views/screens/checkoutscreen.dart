@@ -17,14 +17,13 @@ class CheckoutScreen extends StatefulWidget {
     required this.productDescription, // Added product description
     required this.price,
   });
-
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   int _stockCount = 1;
-
+  final messageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +72,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   widget.productName == null
                       ? SizedBox()
                       : Text(
-                          widget.productName ?? "",
+                          widget.productName!,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -131,6 +130,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: Container(
                 width: 300, // Adjust width here
                 child: TextField(
+                  controller: messageController,
                   decoration: InputDecoration(
                     hintText: 'Enter message to seller',
                     labelText: 'Message to Seller',
@@ -159,6 +159,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             price: widget.price,
                             qty: _stockCount,
                             sellerNumber: widget.sellerNumber,
+                            message: messageController.text.trim(),
                           )));
                 },
                 child: Text('Continue'),

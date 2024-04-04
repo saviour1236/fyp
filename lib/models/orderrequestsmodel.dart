@@ -1,5 +1,4 @@
 class OrderRequestModel {
-  final String? orderId;
   final String productName;
   final String thumbnail;
   final double price;
@@ -9,8 +8,7 @@ class OrderRequestModel {
   final int qty;
 
   OrderRequestModel(
-      {this.orderId,
-      this.productDescription,
+      {this.productDescription,
       required this.productName,
       required this.thumbnail,
       required this.price,
@@ -20,7 +18,6 @@ class OrderRequestModel {
   // toJson
   Map<String, dynamic> toJson() {
     return {
-      'orderId': orderId,
       'productName': productName,
       'thumbnail': thumbnail,
       'price': price,
@@ -33,7 +30,6 @@ class OrderRequestModel {
 
   factory OrderRequestModel.fromJson(Map<String, dynamic> json) {
     return OrderRequestModel(
-      orderId: json['orderId'],
       productName: json['productName'],
       thumbnail: json['thumbnail'],
       price: json['price'],
