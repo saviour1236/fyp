@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/controllers/video_controller.dart';
 import 'package:tikstore/views/screens/checkoutscreen.dart';

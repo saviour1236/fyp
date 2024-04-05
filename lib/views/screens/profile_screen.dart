@@ -5,7 +5,6 @@ import 'package:get/instance_manager.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/controllers/profile_controller.dart';
 import 'package:tikstore/views/screens/auth/login_screen.dart';
-import 'package:tikstore/views/screens/splash_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
