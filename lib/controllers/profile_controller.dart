@@ -32,7 +32,7 @@ class ProfileController extends GetxController {
 
     DocumentSnapshot userDoc =
         await firestore.collection('users').doc(_uid.value).get();
-    final userData = userDoc.data()! as dynamic;
+    final userData = userDoc.data() as dynamic;
     String name = userData['name'];
     String profilePhoto = userData['profilePhoto'];
     int likes = 0;
@@ -60,7 +60,7 @@ class ProfileController extends GetxController {
         .collection('users')
         .doc(_uid.value)
         .collection('followers')
-        .doc(authController.user!.uid)
+        .doc(firebaseAuth.currentUser!.uid)
         .get()
         .then((value) {
       if (value.exists) {
@@ -78,6 +78,7 @@ class ProfileController extends GetxController {
       'profilePhoto': profilePhoto,
       'name': name,
       'thumbnails': thumbnails,
+      'isVerified': userData['isVerified'],
     };
     update();
   }

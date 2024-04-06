@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:get/get.dart';
+import 'package:tikstore/controllers/profile_controller.dart';
+import 'package:tikstore/views/admin/admin_home.dart';
 import 'package:tikstore/views/screens/auth/login_screen.dart';
 import 'package:tikstore/views/screens/home_screen.dart';
 
@@ -16,9 +20,25 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       final user = FirebaseAuth.instance.currentUser;
+
       if (user != null) {
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
+        final userData = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+        final data = userData.data()!;
+
+      
+
+
+
+        if (data['role'] == 'admin') {
+          Get.to(const AdminHomeScreen());
+          return;
+        }
+
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const HomeScreen()));
         return;
       } else {
         Navigator.of(context)
@@ -30,12 +50,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 25),
+            SizedBox(height: 25),
             SizedBox(
               width: 264,
               child: Text(

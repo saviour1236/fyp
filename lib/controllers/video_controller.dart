@@ -15,13 +15,26 @@ class VideoController extends GetxController {
         firestore.collection('videos').snapshots().map((QuerySnapshot query) {
       List<Video> retVal = [];
       for (var element in query.docs) {
-        retVal.add(
-          Video.fromSnap(element),
-        );
+        // retVal.add(
+        //   Video.fromSnap(element),
+        // );
       }
       return retVal;
     }));
   }
+
+
+ Future<void> deleteVideo(String id) async {
+    try {
+      await firestore.collection('videos').doc(id).delete();
+      // Optionally, show a success message or execute additional logic
+    } catch (e) {
+      // Handle errors or exceptions, maybe show an error message
+      print("Error deleting video: $e");
+    }
+  }
+
+ 
 
   likeVideo(String id) async {
     DocumentSnapshot doc = await firestore.collection('videos').doc(id).get();

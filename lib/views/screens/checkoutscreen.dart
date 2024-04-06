@@ -8,14 +8,16 @@ class CheckoutScreen extends StatefulWidget {
   final String? productName; // Added product name
   final String productDescription; // Added product description
   final double price;
+  final String sellerId;
 
-  CheckoutScreen({
+  const CheckoutScreen({
     required this.thumbnailUrl,
     required this.sellerUsername,
     required this.sellerNumber,
     required this.productName, // Added product name
     required this.productDescription, // Added product description
     required this.price,
+    required this.sellerId,
   });
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
@@ -160,6 +162,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             qty: _stockCount,
                             sellerNumber: widget.sellerNumber,
                             message: messageController.text.trim(),
+                            sellerId: widget.sellerId,
                           )));
                 },
                 child: Text('Continue'),

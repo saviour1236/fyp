@@ -13,16 +13,19 @@ class DeliveryDetailsScreen extends StatefulWidget {
   final double price;
   final int qty;
   final String message;
-  const DeliveryDetailsScreen(
-      {super.key,
-      required this.thumbnailUrl,
-      required this.sellerUsername,
-      required this.sellerNumber,
-      this.productName,
-      required this.price,
-      required this.qty,
-      this.message = '',
-      required this.productDescription});
+  final String sellerId;
+  const DeliveryDetailsScreen({
+    super.key,
+    required this.thumbnailUrl,
+    required this.sellerUsername,
+    required this.sellerNumber,
+    this.productName,
+    required this.price,
+    required this.qty,
+    this.message = '',
+    required this.productDescription,
+    required this.sellerId,
+  });
   @override
   _DeliveryDetailsScreenState createState() => _DeliveryDetailsScreenState();
 }
@@ -191,8 +194,11 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                       deliveryAddress:
                           '$_selectedCity, $_selectedProvince, $_enteredTole, $_customerName, $_phoneNumber');
 
-                  final result =
-                      await orderController.createOrder(order, widget.message);
+                  final result = await orderController.createOrder(
+                    order,
+                    widget.message,
+                    sellerId: widget.sellerId,
+                  );
                   if (result == 'OK') {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (_) => MyOrderHistoryScreen()));

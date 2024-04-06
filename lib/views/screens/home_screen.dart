@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tikstore/constants.dart';
+import 'package:tikstore/views/screens/cart_screen.dart';
+import 'package:tikstore/views/screens/profile_screen.dart';
+import 'package:tikstore/views/screens/search_screen.dart';
+import 'package:tikstore/views/screens/upload_videoscreen.dart';
+import 'package:tikstore/views/screens/video_screen.dart';
 import 'package:tikstore/views/widgets/custom_icon.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,6 +16,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int pageIdx = 0;
+  List pages = [
+    VideoScreen(),
+    SearchScreen(),
+    const AddVideoScreen(),
+    const CartScreen(),
+    ProfileScreen(
+      uid: firebaseAuth.currentUser!.uid,
+      ownprofile: true,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {

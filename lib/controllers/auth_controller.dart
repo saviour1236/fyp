@@ -5,7 +5,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tikstore/constants.dart';
-import 'package:tikstore/models/user.dart' as model;
 
 class AuthController extends GetxController {
   final RxBool _isLoading = RxBool(false);
@@ -68,17 +67,17 @@ class AuthController extends GetxController {
         );
 
         String downloadUrl = await _uploadToStorage(image);
-        model.User user = model.User(
-          name: username,
-          email: email,
-          uid: cred.user!.uid,
-          profilePhoto: downloadUrl,
-        );
 
-        await firestore
-            .collection('users')
-            .doc(cred.user!.uid)
-            .set(user.toJson());
+        final data = {
+          'name': username,
+          'email': email,
+          'uid': cred.user!.uid,
+          'profilePhoto': downloadUrl,
+          'role': 'user',
+          'isVerified': false,
+        };
+
+        await firestore.collection('users').doc(cred.user!.uid).set(data);
       } else {
         Get.snackbar(
           'Error Creating Account',
@@ -118,6 +117,7 @@ class AuthController extends GetxController {
         e.toString(),
       );
     }
+    _isLoading.value = false;
     return result;
   }
 

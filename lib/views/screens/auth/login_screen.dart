@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tikstore/constants.dart';
+import 'package:tikstore/controllers/profile_controller.dart';
 import 'package:tikstore/views/screens/auth/signup_screen.dart';
 import 'package:tikstore/views/screens/home_screen.dart';
+import 'package:tikstore/views/screens/splash_screen.dart';
 import 'package:tikstore/views/widgets/text_input_field.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -84,7 +86,12 @@ class LoginScreen extends StatelessWidget {
 
                             if (result == 'login ok') {
                               // Check for 'login ok'
-                              Get.to(HomeScreen());
+                              Get.put(ProfileController()).getUserData();
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => const SplashScreen(),
+                                ),
+                              );
                             } else {
                               Get.snackbar(
                                 'Error Logging in',

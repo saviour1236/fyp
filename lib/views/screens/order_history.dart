@@ -8,7 +8,7 @@ class MyOrderHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'My Order History',
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -17,7 +17,9 @@ class MyOrderHistoryScreen extends StatelessWidget {
           ),
           centerTitle: true,
         ),
-        body: StreamBuilder(
+        body: 
+        
+        StreamBuilder(
           stream: firestore
               .collection('orders')
               .where('buyerID',
@@ -99,6 +101,7 @@ class MyOrderHistoryScreen extends StatelessWidget {
             return Text("lot");
           },
         )
+
         // SingleChildScrollView(
         //   padding: EdgeInsets.all(20),
         //   child: Column(

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/views/screens/auth/login_screen.dart';
 import 'package:tikstore/views/screens/home_screen.dart';
+import 'package:tikstore/views/screens/splash_screen.dart';
 import 'package:tikstore/views/widgets/text_input_field.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -121,7 +122,7 @@ class SignupScreen extends StatelessWidget {
                             );
 
                             if (result == 'OK') {
-                              Get.to(HomeScreen());
+                              Get.to(const SplashScreen());
                             } else {
                               Get.snackbar(
                                 'Error Creating Account',

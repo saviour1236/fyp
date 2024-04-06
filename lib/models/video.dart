@@ -13,7 +13,8 @@ class Video {
   String videoUrl;
   String thumbnail;
   String profilePhoto;
-  String? productName;
+  String? productName; 
+  bool isVerified;
   Video({
     this.price,
     this.productName,
@@ -28,6 +29,7 @@ class Video {
     required this.videoUrl,
     required this.profilePhoto,
     required this.thumbnail,
+    this.isVerified = false,
   });
 
   Map<String, dynamic> toJson() => {
@@ -44,25 +46,27 @@ class Video {
         "caption": caption,
         "videoUrl": videoUrl,
         "thumbnail": thumbnail,
+        "isVerified": isVerified,
       };
 
-  static Video fromSnap(DocumentSnapshot snap) {
-    var snapshot = snap.data() as Map<String, dynamic>;
+  static Video fromSnap(Map<String,dynamic> json) {
+    
 
     return Video(
-      username: snapshot['username'],
-      uid: snapshot['uid'],
-      id: snapshot['id'],
-      likes: snapshot['likes'],
-      price: snapshot['price'],
-      productName: snapshot['productName'],
-      commentCount: snapshot['commentCount'],
-      shareCount: snapshot['shareCount'],
-      songName: snapshot['songName'],
-      caption: snapshot['caption'],
-      videoUrl: snapshot['videoUrl'],
-      profilePhoto: snapshot['profilePhoto'],
-      thumbnail: snapshot['thumbnail'],
+      username: json['username'],
+      uid: json['uid'],
+      id: json['id'],
+      likes: json['likes'],
+      isVerified: json['isVerified'],
+      price: json['price'],
+      productName: json['productName'],
+      commentCount: json['commentCount'],
+      shareCount: json['shareCount'],
+      songName: json['songName'],
+      caption: json['caption'],
+      videoUrl: json['videoUrl'],
+      profilePhoto: json['profilePhoto'],
+      thumbnail: json['thumbnail'],
     );
   }
 }
