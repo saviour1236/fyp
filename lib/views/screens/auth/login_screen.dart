@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:tikstore/constants.dart';
 import 'package:tikstore/controllers/profile_controller.dart';
 import 'package:tikstore/views/screens/auth/signup_screen.dart';
-import 'package:tikstore/views/screens/home_screen.dart';
 import 'package:tikstore/views/screens/splash_screen.dart';
 import 'package:tikstore/views/widgets/text_input_field.dart';
 
@@ -29,6 +28,11 @@ class LoginScreen extends StatelessWidget {
                   color: buttonColor,
                   fontWeight: FontWeight.w900,
                 ),
+              ),
+              Image.asset(
+                'assets/logo.png',
+                width: 200,
+                height: 200,
               ),
               const Text(
                 'Login',
@@ -67,7 +71,7 @@ class LoginScreen extends StatelessWidget {
               ),
               Obx(
                 () => authController.isLoading.value
-                    ? CircularProgressIndicator() // Display progress indicator
+                    ? CircularProgressIndicator()
                     : Container(
                         width: MediaQuery.of(context).size.width - 40,
                         height: 50,
@@ -85,7 +89,6 @@ class LoginScreen extends StatelessWidget {
                             );
 
                             if (result == 'login ok') {
-                              // Check for 'login ok'
                               Get.put(ProfileController()).getUserData();
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
