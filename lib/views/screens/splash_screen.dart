@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
-import 'package:tikstore/controllers/profile_controller.dart';
 import 'package:tikstore/views/admin/admin_home.dart';
 import 'package:tikstore/views/screens/auth/login_screen.dart';
 import 'package:tikstore/views/screens/home_screen.dart';
@@ -27,10 +26,6 @@ class _SplashScreenState extends State<SplashScreen> {
             .doc(user.uid)
             .get();
         final data = userData.data()!;
-
-      
-
-
 
         if (data['role'] == 'admin') {
           Get.to(const AdminHomeScreen());

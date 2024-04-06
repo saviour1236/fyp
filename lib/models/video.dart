@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Video {
   String username;
   String uid;
@@ -13,7 +11,7 @@ class Video {
   String videoUrl;
   String thumbnail;
   String profilePhoto;
-  String? productName; 
+  String? productName;
   bool isVerified;
   Video({
     this.price,
@@ -49,9 +47,7 @@ class Video {
         "isVerified": isVerified,
       };
 
-  static Video fromSnap(Map<String,dynamic> json) {
-    
-
+  static Video fromSnap(Map<String, dynamic> json) {
     return Video(
       username: json['username'],
       uid: json['uid'],
