@@ -14,17 +14,12 @@ class VideoController extends GetxController {
     _videoList.bindStream(
         firestore.collection('videos').snapshots().map((QuerySnapshot query) {
       List<Video> retVal = [];
-      for (var element in query.docs) {
-        // retVal.add(
-        //   Video.fromSnap(element),
-        // );
-      }
+      for (var element in query.docs) {}
       return retVal;
     }));
   }
 
-
- Future<void> deleteVideo(String id) async {
+  Future<void> deleteVideo(String id) async {
     try {
       await firestore.collection('videos').doc(id).delete();
       // Optionally, show a success message or execute additional logic
@@ -34,11 +29,9 @@ class VideoController extends GetxController {
     }
   }
 
- 
-
   likeVideo(String id) async {
     DocumentSnapshot doc = await firestore.collection('videos').doc(id).get();
-    var uid = authController.user!.uid;
+    var uid = firebaseAuth.currentUser!.uid;
     if ((doc.data()! as dynamic)['likes'].contains(uid)) {
       await firestore.collection('videos').doc(id).update({
         'likes': FieldValue.arrayRemove([uid]),
