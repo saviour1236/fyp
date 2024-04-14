@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tikstore/views/screens/auth/login_screen.dart';
 import 'package:tikstore/views/screens/profile_screen.dart';
 
@@ -43,7 +43,7 @@ class AdminHomeScreen extends StatelessWidget {
                   final user = data.docs[index];
                   return ListTile(
                     onTap: () {
-                      Get.to(ProfileScreen(uid: user["uid"]));
+                      Get.to(ProfileScreen(uid: user['uid']));
                     },
                     leading: CircleAvatar(
                       backgroundImage:
@@ -51,61 +51,65 @@ class AdminHomeScreen extends StatelessWidget {
                     ),
                     title: Text(user['name']),
                     subtitle: Text(user['email']),
-                    trailing: user['isVerified']
-                        ? TextButton(
-                            onPressed: () {
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(user.id)
-                                  .update({
-                                'isVerified': false,
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            var newStatus = !user['isVerified'];
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user.id)
+                                .update({'isVerified': newStatus});
+                            FirebaseFirestore.instance
+                                .collection('videos')
+                                .where('uid', isEqualTo: user.id)
+                                .get()
+                                .then((value) {
+                              value.docs.forEach((element) {
+                                FirebaseFirestore.instance
+                                    .collection('videos')
+                                    .doc(element.id)
+                                    .update({'isVerified': newStatus});
                               });
-
-                              FirebaseFirestore.instance
-                                  .collection('videos')
-                                  .where('uid', isEqualTo: user.id)
-                                  .get()
-                                  .then((value) {
-                                value.docs.forEach((element) {
-                                  FirebaseFirestore.instance
-                                      .collection('videos')
-                                      .doc(element.id)
-                                      .update({
-                                    'isVerified': false,
-                                  });
-                                });
-                              });
-                            },
-                            child: const Text('Remove as Buyer'),
-                          )
-                        : TextButton(
-                            onPressed: () {
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(user.id)
-                                  .update({
-                                'isVerified': true,
-                              });
-
-                              // update in the videos collection
-
-                              FirebaseFirestore.instance
-                                  .collection('videos')
-                                  .where('uid', isEqualTo: user.id)
-                                  .get()
-                                  .then((value) {
-                                value.docs.forEach((element) {
-                                  FirebaseFirestore.instance
-                                      .collection('videos')
-                                      .doc(element.id)
-                                      .update({
-                                    'isVerified': true,
-                                  });
-                                });
-                              });
-                            },
-                            child: const Text('Verify as Buyer'),
-                          ),
+                            });
+                          },
+                          child:
+                              Text(user['isVerified'] ? 'Unverify' : 'Verify'),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Confirm Deletion"),
+                                content: Text(
+                                    "Are you sure you want to delete ${user['name']}'s account?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(user.id)
+                                          .delete();
+                                      // Optionally, delete related documents in other collections
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text("Delete"),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   );
                 },
               );
