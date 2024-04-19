@@ -6,6 +6,7 @@ import 'package:tikstore/constants.dart';
 import 'package:tikstore/controllers/profile_controller.dart';
 import 'package:tikstore/models/video.dart';
 import 'package:tikstore/views/screens/auth/login_screen.dart';
+import 'package:tikstore/views/screens/edit_profile_screen.dart';
 import 'package:tikstore/views/screens/video_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -110,6 +111,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           )
                                         ],
                                       ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        controller.user['name'],
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                       const SizedBox(
                                         height: 15,
                                       ),
@@ -193,44 +203,101 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         height: 15,
                                       ),
                                       Container(
-                                        width: 140,
-                                        height: 47,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.black12,
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: InkWell(
-                                            onTap: () {
-                                              if (widget.uid ==
-                                                  firebaseAuth
-                                                      .currentUser!.uid) {
-                                                authController.signOut();
-                                                Navigator.of(context)
-                                                    .pushReplacement(
-                                                        MaterialPageRoute(
-                                                            builder: (_) =>
-                                                                LoginScreen()));
-                                              } else {
-                                                controller.followUser();
-                                              }
-                                            },
-                                            child: Text(
-                                              widget.uid ==
-                                                      firebaseAuth
-                                                          .currentUser!.uid
-                                                  ? 'Sign Out'
-                                                  : controller
-                                                          .user['isFollowing']
-                                                      ? 'Unfollow'
-                                                      : 'Follow',
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
+                                        width: double.infinity,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .center, // Changed to center to reduce space
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                // Added padding to fine-tune spacing
+                                                padding: const EdgeInsets.only(
+                                                    left: 110,
+                                                    right:
+                                                        5), // Adjust these values as needed
+                                                child: Container(
+                                                  height: 47,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: Colors.black12,
+                                                    ),
+                                                  ),
+                                                  child: Center(
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        if (widget.uid ==
+                                                            firebaseAuth
+                                                                .currentUser!
+                                                                .uid) {
+                                                          authController
+                                                              .signOut();
+                                                          Navigator.of(context)
+                                                              .pushReplacement(
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (_) =>
+                                                                              LoginScreen()));
+                                                        } else {
+                                                          controller
+                                                              .followUser();
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                        widget.uid ==
+                                                                firebaseAuth
+                                                                    .currentUser!
+                                                                    .uid
+                                                            ? 'Sign Out'
+                                                            : (controller.user[
+                                                                    'isFollowing']
+                                                                ? 'Unfollow'
+                                                                : 'Follow'),
+                                                        style: const TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                            Expanded(
+                                              child: Padding(
+                                                // Added padding to fine-tune spacing
+                                                padding: const EdgeInsets.only(
+                                                    left: 5,
+                                                    right:
+                                                        110), // Adjust these values as needed
+                                                child: Container(
+                                                  height: 47,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: Colors.black12,
+                                                    ),
+                                                  ),
+                                                  child: Center(
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        // Navigate to the Edit Profile Screen (to be created)
+                                                        Get.to(() =>
+                                                            EditProfileScreen());
+                                                      },
+                                                      child: const Text(
+                                                        'Edit',
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       const SizedBox(
