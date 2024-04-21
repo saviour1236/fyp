@@ -28,7 +28,7 @@ class _CartScreenState extends State<CartScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order History'),
+        title: Text('My Cart'),
         bottom: TabBar(
           controller: _tabController,
           tabs: [
@@ -63,89 +63,105 @@ class MyOrderHistoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: firestore
+      stream: FirebaseFirestore.instance
           .collection('orders')
           .where('buyerID', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
           .snapshots(),
       builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
         if (snapshot.hasData) {
           return ListView.builder(
-              itemCount: snapshot.data?.docs.length,
+              itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
-                final data = snapshot.data?.docs[index].data();
+                final data =
+                    snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                final docId = snapshot.data!.docs[index].id;
                 return ListTile(
                   title: Row(
                     children: [
-                      // Thumbnail
                       InkWell(
                         onTap: () {
-                          Get.to(ProfileScreen(uid: data?["buyerID"]));
+                          Get.to(OrderDetailScreen(orderDetails: data));
                         },
                         child: Image.network(
-                          data?["order"]["thumbnail"],
+                          data["order"]["thumbnail"],
                           width: 100,
-                          height: 100, // Set height to a non-zero value
+                          height: 100,
                           fit: BoxFit.cover,
                         ),
                       ),
                       SizedBox(width: 10),
-                      // Product Details
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Order no. ${index + 1}'),
-                            const SizedBox(height: 5),
+                            SizedBox(height: 5),
                             Text(
-                              data?["order"]["productName"],
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              data["order"]["productName"],
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(height: 5),
+                            SizedBox(height: 5),
                             Text(
-                              '\$ ${data?["order"]["price"]}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              '\$ ${data["order"]["price"]}',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(height: 5),
+                            SizedBox(height: 5),
                             Text(
-                              'x ${data?["order"]["qty"]}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              'x ${data["order"]["qty"]}',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(height: 10),
-                            // Reorder Button
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Get.to(
-                                    OrderDetailScreen(
-                                      orderDetails: data ?? {},
-                                    ),
-                                  );
-                                },
-                                child: const Text('View Details'),
-                              ),
-                            ),
+                            SizedBox(height: 10),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  // Add onTap callback to handle order details navigation
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Confirm Deletion"),
+                            content: Text(
+                                "Are you sure you want to delete this order?"),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: Text("Delete"),
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('orders')
+                                      .doc(docId)
+                                      .delete()
+                                      .then((_) => Navigator.of(context).pop());
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
                   onTap: () {
-                    // Navigate to order details screen
-                    // You can implement this based on your navigation setup
+                    Get.to(OrderDetailScreen(orderDetails: data));
                   },
                 );
               });
+        } else if (snapshot.hasError) {
+          return Text("Error: ${snapshot.error}");
         }
-
-        return Text("lot");
+        return const Text("Loading...");
       },
     );
   }
