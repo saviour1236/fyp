@@ -84,7 +84,11 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                     'Select Province',
                     'Jhapa Province',
                     'Morang Province',
-                    'Bagmati Province'
+                    'Bagmati Province',
+                    'Gandaki Province',
+                    'Lumbini Province',
+                    'Karnali Province',
+                    'Sudurpashchim Province'
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -114,9 +118,13 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                   },
                   items: <String>[
                     'Select City',
-                    'Lalitpur',
+                    'Biratnagar',
+                    'Janakpur',
                     'Kathmandu',
-                    'Bhaktapur'
+                    'Pokhara',
+                    'Butwal',
+                    'Birendranagar',
+                    'Dhangadhi'
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
