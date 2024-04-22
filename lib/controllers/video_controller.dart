@@ -22,9 +22,7 @@ class VideoController extends GetxController {
   Future<void> deleteVideo(String id) async {
     try {
       await firestore.collection('videos').doc(id).delete();
-      // Optionally, show a success message or execute additional logic
     } catch (e) {
-      // Handle errors or exceptions, maybe show an error message
       print("Error deleting video: $e");
     }
   }

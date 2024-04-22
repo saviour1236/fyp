@@ -98,7 +98,7 @@ class AdminHomeScreen extends StatelessWidget {
                                           .collection('users')
                                           .doc(user.id)
                                           .delete();
-                                      // Optionally, delete related documents in other collections
+
                                       Navigator.of(context).pop();
                                     },
                                     child: const Text("Delete"),

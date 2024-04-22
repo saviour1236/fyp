@@ -21,8 +21,6 @@ class AuthController extends GetxController {
   void onReady() {
     super.onReady();
     _user = Rx<User?>(firebaseAuth.currentUser);
-    // _user.bindStream(firebaseAuth.authStateChanges());
-    // ever(_user, _setInitialScreen);
   }
 
   void pickImage() async {
@@ -35,7 +33,6 @@ class AuthController extends GetxController {
     _pickedImage = Rx<File?>(File(pickedImage!.path));
   }
 
-  // upload to firebase storage
   Future<String> _uploadToStorage(File image) async {
     Reference ref = firebaseStorage
         .ref()
@@ -48,7 +45,6 @@ class AuthController extends GetxController {
     return downloadUrl;
   }
 
-  // registering the user
   Future<String> registerUser(
       String username, String email, String password, File? image) async {
     String result = 'OK';
@@ -57,8 +53,6 @@ class AuthController extends GetxController {
           email.isNotEmpty &&
           password.isNotEmpty &&
           image != null) {
-        // save out user to our ath and firebase firestore
-
         _isLoading.value = true;
 
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(

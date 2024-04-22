@@ -48,11 +48,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> updateProfile() async {
     Get.dialog(
-      Center(
-          child:
-              CircularProgressIndicator()), // Show loading indicator during the update
-      barrierDismissible:
-          false, // Prevent dismissing the dialog by tapping outside
+      Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
     );
 
     String profileUrl = '';

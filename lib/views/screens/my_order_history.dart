@@ -27,7 +27,7 @@ class MyOrderHistory extends StatelessWidget {
                         Image.network(
                           data?["order"]["thumbnail"],
                           width: 100,
-                          height: 100, // Set height to a non-zero value
+                          height: 100,
                           fit: BoxFit.cover,
                         ),
                         const SizedBox(width: 10),
@@ -78,11 +78,7 @@ class MyOrderHistory extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Add onTap callback to handle order details navigation
-                    onTap: () {
-                      // Navigate to order details screen
-                      // You can implement this based on your navigation setup
-                    },
+                    onTap: () {},
                   );
                 });
           }

@@ -5,8 +5,8 @@ class CheckoutScreen extends StatefulWidget {
   final String thumbnailUrl;
   final String sellerUsername;
   final String sellerNumber;
-  final String? productName; // Added product name
-  final String productDescription; // Added product description
+  final String? productName;
+  final String productDescription;
   final double price;
   final String sellerId;
 
@@ -14,8 +14,8 @@ class CheckoutScreen extends StatefulWidget {
     required this.thumbnailUrl,
     required this.sellerUsername,
     required this.sellerNumber,
-    required this.productName, // Added product name
-    required this.productDescription, // Added product description
+    required this.productName,
+    required this.productDescription,
     required this.price,
     required this.sellerId,
   });
@@ -46,7 +46,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
             SizedBox(height: 10),
 
-            // Sold By and Seller Number texts
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
@@ -66,7 +65,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
             SizedBox(height: 20),
 
-            // Centered column for Product Name and Description
             Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -130,7 +128,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             SizedBox(height: 20),
             Center(
               child: Container(
-                width: 300, // Adjust width here
+                width: 300,
                 child: TextField(
                   controller: messageController,
                   decoration: InputDecoration(
@@ -140,7 +138,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     labelStyle: TextStyle(
                       fontSize: 16,
                     ),
-                    alignLabelWithHint: false, // Center the label text
+                    alignLabelWithHint: false,
                   ),
                   maxLines: null,
                 ),

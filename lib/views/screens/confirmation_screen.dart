@@ -29,7 +29,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
   File? _imageFile;
   UploadVideoController uploadVideoController =
       Get.put(UploadVideoController());
-  bool _isUploading = false; // Variable to track upload status
+  bool _isUploading = false;
 
   @override
   void initState() {

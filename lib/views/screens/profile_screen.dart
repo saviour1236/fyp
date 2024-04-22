@@ -205,16 +205,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Container(
                                         width: double.infinity,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center, // Changed to center to reduce space
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Expanded(
                                               child: Padding(
-                                                // Added padding to fine-tune spacing
                                                 padding: const EdgeInsets.only(
-                                                    left: 110,
-                                                    right:
-                                                        5), // Adjust these values as needed
+                                                    left: 110, right: 5),
                                                 child: Container(
                                                   height: 47,
                                                   decoration: BoxDecoration(
@@ -265,11 +262,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             ),
                                             Expanded(
                                               child: Padding(
-                                                // Added padding to fine-tune spacing
                                                 padding: const EdgeInsets.only(
-                                                    left: 5,
-                                                    right:
-                                                        110), // Adjust these values as needed
+                                                    left: 5, right: 110),
                                                 child: Container(
                                                   height: 47,
                                                   decoration: BoxDecoration(
@@ -280,7 +274,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   child: Center(
                                                     child: InkWell(
                                                       onTap: () {
-                                                        // Navigate to the Edit Profile Screen (to be created)
                                                         Get.to(() =>
                                                             EditProfileScreen());
                                                       },

@@ -81,16 +81,12 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
 
   Future<void> _deleteVideo(BuildContext context, String videoId) async {
     try {
-      // Example Firestore deletion, replace 'videos' with your actual collection path
       await FirebaseFirestore.instance
           .collection('videos')
-          .doc(videoId) // Use the video's unique ID to delete
+          .doc(videoId)
           .delete();
 
-      Navigator.of(context).pop(); // Close the dialog
-
-      // Optionally, pop the current route if you want to return to the previous screen after deletion
-      // Navigator.of(context).pop();
+      Navigator.of(context).pop();
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Video deleted successfully')),

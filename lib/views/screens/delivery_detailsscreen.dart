@@ -31,11 +31,11 @@ class DeliveryDetailsScreen extends StatefulWidget {
 }
 
 class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
-  String _selectedProvince = 'Select Province'; // Set default province
-  String _selectedCity = 'Select City'; // Set default city
-  String _enteredTole = ''; // To store the entered tole
-  String _customerName = ''; // To store the customer's name
-  String _phoneNumber = ''; // To store the customer's phone number
+  String _selectedProvince = 'Select Province';
+  String _selectedCity = 'Select City';
+  String _enteredTole = '';
+  String _customerName = '';
+  String _phoneNumber = '';
   OrderController orderController = Get.put(OrderController());
 
   @override

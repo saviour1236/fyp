@@ -7,7 +7,7 @@ import 'package:tikstore/models/video.dart';
 import 'package:uuid/uuid.dart';
 
 class UploadVideoController extends GetxController {
-  bool _isUploading = false; // Flag to track upload status
+  bool _isUploading = false;
 
   Future<String> _uploadVideoToStorage(String id, String videoPath) async {
     Reference ref = firebaseStorage.ref().child('videos').child(id);
@@ -34,8 +34,8 @@ class UploadVideoController extends GetxController {
       String? productName,
       File? thumbnailFile}) async {
     try {
-      _isUploading = true; // Set uploading flag to true
-      update(); // Notify listeners to reflect changes in UI
+      _isUploading = true;
+      update();
 
       String uid = firebaseAuth.currentUser!.uid;
       DocumentSnapshot userDoc =
@@ -72,13 +72,12 @@ class UploadVideoController extends GetxController {
             video.toJson(),
           );
 
-      _isUploading =
-          false; // Set uploading flag to false after upload completes
-      update(); // Notify listeners to reflect changes in UI
+      _isUploading = false;
+      update();
       Get.back();
     } catch (e) {
-      _isUploading = false; // Set uploading flag to false on error
-      update(); // Notify listeners to reflect changes in UI
+      _isUploading = false;
+      update();
       Get.snackbar(
         'Error Uploading Video',
         e.toString(),
@@ -86,6 +85,5 @@ class UploadVideoController extends GetxController {
     }
   }
 
-  // Getter to access upload status
   bool get isUploading => _isUploading;
 }

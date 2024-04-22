@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tikstore/constants.dart';
-import 'package:tikstore/views/screens/viewdetails_screen.dart';
-import 'package:tikstore/views/screens/home_screen.dart'; // Make sure to import your HomeScreen here
+import 'package:tikstore/views/screens/home_screen.dart';
 
 class MyOrderHistoryScreen extends StatelessWidget {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -32,8 +30,7 @@ class MyOrderHistoryScreen extends StatelessWidget {
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (context, index) {
                   final data = snapshot.data?.docs[index].data();
-                  final docId =
-                      snapshot.data?.docs[index].id; // Retrieve document ID
+                  final docId = snapshot.data?.docs[index].id;
                   return ListTile(
                     title: Row(
                       children: [
@@ -103,9 +100,7 @@ class MyOrderHistoryScreen extends StatelessWidget {
                         }
                       },
                     ),
-                    onTap: () {
-                      // Handle onTap if needed
-                    },
+                    onTap: () {},
                   );
                 });
           } else if (snapshot.hasError) {
@@ -116,9 +111,8 @@ class MyOrderHistoryScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  HomeScreen())); // Adjust with correct navigation if needed
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => HomeScreen()));
         },
         label: Text("Continue Shopping"),
         icon: Icon(Icons.shopping_cart),
@@ -127,14 +121,11 @@ class MyOrderHistoryScreen extends StatelessWidget {
     );
   }
 
-  // Function to delete an order
   void deleteOrder(String docId) {
     firestore.collection('orders').doc(docId).delete().then((_) {
       print('Order successfully deleted!');
-      // Optionally show a snackbar or dialog here to confirm deletion
     }).catchError((error) {
       print('Error deleting order: $error');
-      // Handle errors, possibly showing an alert dialog
     });
   }
 }
