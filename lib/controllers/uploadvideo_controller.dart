@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:tikstore/constants.dart';
@@ -25,37 +26,37 @@ class UploadVideoController extends GetxController {
     return downloadUrl;
   }
 
-  // upload video
-  uploadVideo(
-      {required String songName,
-      required String caption,
-      required String videoPath,
-      double? price,
-      String? productName,
-      File? thumbnailFile}) async {
+  Future<void> uploadVideo({
+    required String songName,
+    required String caption,
+    required String videoPath,
+    double? price,
+    String? productName,
+    File? thumbnailFile,
+  }) async {
+    if (_isUploading) return; // Prevent duplicate uploads
+    _isUploading = true;
+    update(); // Notify listeners about the state change
+
     try {
-      _isUploading = true;
-      update();
+      final String uid = FirebaseAuth.instance.currentUser!.uid;
+      final DocumentSnapshot userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
 
-      String uid = firebaseAuth.currentUser!.uid;
-      DocumentSnapshot userDoc =
-          await firestore.collection('users').doc(uid).get();
-      // get id
-      var allDocs = await firestore.collection('videos').get();
-      String len = Uuid().v4();
-
-      String videoUrl = await _uploadVideoToStorage("Video $len", videoPath);
+      var videoId = Uuid().v4(); // Generate a unique ID for the video
+      String videoUrl =
+          await _uploadVideoToStorage("Video $videoId", videoPath);
       String thumbnailUrl = '';
 
       if (thumbnailFile != null) {
-        thumbnailUrl =
-            await _uploadImageToStorage("Thumbnail $len", thumbnailFile.path);
+        thumbnailUrl = await _uploadImageToStorage(
+            "Thumbnail $videoId", thumbnailFile.path);
       }
 
       Video video = Video(
-        username: (userDoc.data()! as Map<String, dynamic>)['name'],
+        username: (userDoc.data() as Map<String, dynamic>)['name'],
         uid: uid,
-        id: "Video $len",
+        id: "Video $videoId",
         likes: [],
         price: price,
         productName: productName,
@@ -64,24 +65,22 @@ class UploadVideoController extends GetxController {
         songName: songName,
         caption: caption,
         videoUrl: videoUrl,
-        profilePhoto: (userDoc.data()! as Map<String, dynamic>)['profilePhoto'],
+        profilePhoto: (userDoc.data() as Map<String, dynamic>)['profilePhoto'],
         thumbnail: thumbnailUrl,
       );
 
-      await firestore.collection('videos').doc('Video $len').set(
-            video.toJson(),
-          );
+      await FirebaseFirestore.instance
+          .collection('videos')
+          .doc('Video $videoId')
+          .set(video.toJson());
 
-      _isUploading = false;
-      update();
-      Get.back();
+      Get.snackbar('Success', 'Video uploaded successfully!');
     } catch (e) {
+      Get.snackbar('Error Uploading Video', e.toString());
+      print("Upload failed: $e"); // Log the error for debugging
+    } finally {
       _isUploading = false;
       update();
-      Get.snackbar(
-        'Error Uploading Video',
-        e.toString(),
-      );
     }
   }
 

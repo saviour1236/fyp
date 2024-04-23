@@ -208,10 +208,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
+                                            if (widget
+                                                .ownprofile) // Conditional rendering of the Edit button
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 110, right: 5),
+                                                  child: Container(
+                                                    height: 47,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        color: Colors.black12,
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          Get.to(() =>
+                                                              EditProfileScreen()); // Navigation to Edit Profile Screen
+                                                        },
+                                                        child: Text(
+                                                          'Edit',
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                             Expanded(
                                               child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 110, right: 5),
+                                                padding: EdgeInsets.only(
+                                                    left: 5,
+                                                    right: widget.ownprofile
+                                                        ? 110
+                                                        : 5),
                                                 child: Container(
                                                   height: 47,
                                                   decoration: BoxDecoration(
@@ -233,10 +268,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                   MaterialPageRoute(
                                                                       builder:
                                                                           (_) =>
-                                                                              LoginScreen()));
+                                                                              LoginScreen() // Navigate to Login Screen on sign out
+                                                                      ));
                                                         } else {
                                                           controller
-                                                              .followUser();
+                                                              .followUser(); // Toggle follow/unfollow state
                                                         }
                                                       },
                                                       child: Text(
@@ -249,36 +285,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                     'isFollowing']
                                                                 ? 'Unfollow'
                                                                 : 'Follow'),
-                                                        style: const TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 5, right: 110),
-                                                child: Container(
-                                                  height: 47,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: Colors.black12,
-                                                    ),
-                                                  ),
-                                                  child: Center(
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        Get.to(() =>
-                                                            EditProfileScreen());
-                                                      },
-                                                      child: const Text(
-                                                        'Edit',
                                                         style: TextStyle(
                                                           fontSize: 15,
                                                           fontWeight:

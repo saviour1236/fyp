@@ -72,10 +72,18 @@ class AuthController extends GetxController {
         };
 
         await firestore.collection('users').doc(cred.user!.uid).set(data);
+
+        // Display success message
+        Get.snackbar(
+          'Success',
+          'Account created successfully! Welcome, $username.',
+          snackPosition: SnackPosition.TOP,
+        );
       } else {
         Get.snackbar(
           'Error Creating Account',
           'Please enter all the fields',
+          snackPosition: SnackPosition.TOP,
         );
       }
     } catch (e) {
@@ -83,11 +91,11 @@ class AuthController extends GetxController {
       Get.snackbar(
         'Error Creating Account',
         e.toString(),
+        snackPosition: SnackPosition.TOP,
       );
     }
 
     _isLoading.value = false;
-
     return result;
   }
 
